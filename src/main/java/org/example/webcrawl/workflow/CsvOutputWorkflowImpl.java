@@ -19,7 +19,7 @@ public class CsvOutputWorkflowImpl implements CsvOutputWorkflow {
     );
 
     @Override
-    public String generateCsvOutput(String url, String robotsContent, String homepageContent) {
+    public String generateOutput(String url, String robotsContent, String homepageContent) {
         logger.info("Starting CSV output workflow for URL: {}", url);
         return outputActivity.generateCsvOutput(url, robotsContent, homepageContent);
     }

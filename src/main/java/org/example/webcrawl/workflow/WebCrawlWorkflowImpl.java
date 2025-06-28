@@ -59,15 +59,15 @@ public class WebCrawlWorkflowImpl implements WebCrawlWorkflow {
         return switch (format) {
             case JSON -> {
                 JsonOutputWorkflow jsonWorkflow = Workflow.newChildWorkflowStub(JsonOutputWorkflow.class, options);
-                yield jsonWorkflow.generateJsonOutput(url, robotsContent, homepageContent);
+                yield jsonWorkflow.generateOutput(url, robotsContent, homepageContent);
             }
             case CSV -> {
                 CsvOutputWorkflow csvWorkflow = Workflow.newChildWorkflowStub(CsvOutputWorkflow.class, options);
-                yield csvWorkflow.generateCsvOutput(url, robotsContent, homepageContent);
+                yield csvWorkflow.generateOutput(url, robotsContent, homepageContent);
             }
             case XML -> {
                 XmlOutputWorkflow xmlWorkflow = Workflow.newChildWorkflowStub(XmlOutputWorkflow.class, options);
-                yield xmlWorkflow.generateXmlOutput(url, robotsContent, homepageContent);
+                yield xmlWorkflow.generateOutput(url, robotsContent, homepageContent);
             }
         };
     }

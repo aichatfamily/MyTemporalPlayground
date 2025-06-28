@@ -19,7 +19,7 @@ public class JsonOutputWorkflowImpl implements JsonOutputWorkflow {
     );
 
     @Override
-    public String generateJsonOutput(String url, String robotsContent, String homepageContent) {
+    public String generateOutput(String url, String robotsContent, String homepageContent) {
         logger.info("Starting JSON output workflow for URL: {}", url);
         return outputActivity.generateJsonOutput(url, robotsContent, homepageContent);
     }

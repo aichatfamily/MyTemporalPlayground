@@ -19,7 +19,7 @@ public class XmlOutputWorkflowImpl implements XmlOutputWorkflow {
     );
 
     @Override
-    public String generateXmlOutput(String url, String robotsContent, String homepageContent) {
+    public String generateOutput(String url, String robotsContent, String homepageContent) {
         logger.info("Starting XML output workflow for URL: {}", url);
         return outputActivity.generateXmlOutput(url, robotsContent, homepageContent);
     }
