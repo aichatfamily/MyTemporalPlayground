@@ -14,13 +14,4 @@ public interface WebCrawlActivity {
     
     @ActivityMethod
     String crawlHomepage(String url);
-    
-    @ActivityMethod
-    String outputToJson(String url, String robotsContent, String homepageContent);
-    
-    @ActivityMethod
-    String outputToCsv(String url, String robotsContent, String homepageContent);
-    
-    @ActivityMethod
-    String outputToXml(String url, String robotsContent, String homepageContent);
 }

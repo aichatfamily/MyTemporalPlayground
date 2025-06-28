@@ -1,6 +1,7 @@
 package org.example.webcrawl.workflow;
 
 import io.temporal.activity.ActivityOptions;
+import io.temporal.workflow.ChildWorkflowOptions;
 import io.temporal.workflow.Workflow;
 import org.example.webcrawl.activity.WebCrawlActivity;
 import org.example.webcrawl.model.OutputFormat;
@@ -38,7 +39,7 @@ public class WebCrawlWorkflowImpl implements WebCrawlWorkflow {
         // Step 3: Crawl homepage
         String homepageContent = activity.crawlHomepage(url);
         
-        // Step 4: Generate output files based on requested formats
+        // Step 4: Generate output files using child workflows
         for (OutputFormat format : request.outputFormats()) {
             String filename = generateOutputFile(format, url, robotsContent, homepageContent);
             generatedFiles.add(filename);
@@ -49,12 +50,25 @@ public class WebCrawlWorkflowImpl implements WebCrawlWorkflow {
     }
 
     private String generateOutputFile(OutputFormat format, String url, String robotsContent, String homepageContent) {
-        logger.info("Generating output file in format: {}", format);
+        logger.info("Generating output file in format: {} using child workflow", format);
+
+        ChildWorkflowOptions options = ChildWorkflowOptions.newBuilder()
+                .setWorkflowId("output-" + format.toString() + "-" + url.replace(".", "-") + "-" + System.currentTimeMillis())
+                .build();
 
         return switch (format) {
-            case JSON -> activity.outputToJson(url, robotsContent, homepageContent);
-            case CSV -> activity.outputToCsv(url, robotsContent, homepageContent);
-            case XML -> activity.outputToXml(url, robotsContent, homepageContent);
+            case JSON -> {
+                JsonOutputWorkflow jsonWorkflow = Workflow.newChildWorkflowStub(JsonOutputWorkflow.class, options);
+                yield jsonWorkflow.generateJsonOutput(url, robotsContent, homepageContent);
+            }
+            case CSV -> {
+                CsvOutputWorkflow csvWorkflow = Workflow.newChildWorkflowStub(CsvOutputWorkflow.class, options);
+                yield csvWorkflow.generateCsvOutput(url, robotsContent, homepageContent);
+            }
+            case XML -> {
+                XmlOutputWorkflow xmlWorkflow = Workflow.newChildWorkflowStub(XmlOutputWorkflow.class, options);
+                yield xmlWorkflow.generateXmlOutput(url, robotsContent, homepageContent);
+            }
         };
     }
 }

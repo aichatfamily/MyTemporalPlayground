@@ -25,21 +25,4 @@ public class WebCrawlActivityImpl implements WebCrawlActivity {
         return "<html><head><title>" + url + "</title></head><body><h1>Welcome to " + url + "</h1></body></html>";
     }
 
-    @Override
-    public String outputToJson(String url, String robotsContent, String homepageContent) {
-        logger.info("Generating JSON output for URL: {}", url);
-        return url.replace(".", "_") + "_output.json";
-    }
-
-    @Override
-    public String outputToCsv(String url, String robotsContent, String homepageContent) {
-        logger.info("Generating CSV output for URL: {}", url);
-        return url.replace(".", "_") + "_output.csv";
-    }
-
-    @Override
-    public String outputToXml(String url, String robotsContent, String homepageContent) {
-        logger.info("Generating XML output for URL: {}", url);
-        return url.replace(".", "_") + "_output.xml";
-    }
 }
