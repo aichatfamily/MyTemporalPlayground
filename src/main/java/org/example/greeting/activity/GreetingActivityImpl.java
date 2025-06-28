@@ -1,6 +1,6 @@
-package org.example;
+package org.example.greeting.activity;
 
-public class HelloActivityImpl implements HelloActivity {
+public class GreetingActivityImpl implements GreetingActivity {
     
     @Override
     public String createGreeting(String name) {

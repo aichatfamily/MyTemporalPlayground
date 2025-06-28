@@ -1,14 +1,15 @@
-package org.example;
+package org.example.greeting.workflow;
 
 import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.Workflow;
+import org.example.greeting.activity.GreetingActivity;
 
 import java.time.Duration;
 
-public class HelloWorkflowImpl implements HelloWorkflow {
+public class GreetingWorkflowImpl implements GreetingWorkflow {
 
-    private final HelloActivity activity = Workflow.newActivityStub(
-        HelloActivity.class,
+    private final GreetingActivity activity = Workflow.newActivityStub(
+        GreetingActivity.class,
         ActivityOptions.newBuilder()
             .setStartToCloseTimeout(Duration.ofSeconds(30))
             .build()
