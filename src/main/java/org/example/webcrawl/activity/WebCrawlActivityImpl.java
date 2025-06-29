@@ -1,5 +1,6 @@
 package org.example.webcrawl.activity;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +11,11 @@ public class WebCrawlActivityImpl implements WebCrawlActivity {
     @Override
     public String searchRobotsTxt(String url) {
         logger.info("Searching robots.txt for URL: {}", url);
+        
+        if (StringUtils.isBlank(url)) {
+            throw new IllegalArgumentException("URL cannot be blank!");
+        }
+        
         return "https://" + url + "/robots.txt";
     }
 
