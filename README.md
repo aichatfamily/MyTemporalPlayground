@@ -7,7 +7,7 @@ This project provides hands-on examples to help you learn and experiment with [T
 Before you begin, ensure you have the following installed:
 
 1.  **Java 21+**: This project is built with Java 21. You can verify your version with `java --version`.
-2.  **Temporal CLI**: The `temporal` command-line tool is required to run a local Temporal server. Follow the [official instructions](https://docs.temporal.io/cli/install) to install it.
+2.  **Temporal CLI**: The `temporal` command-line tool is required to run a local Temporal server. Follow the [official instructions](https://docs.temporal.io/cli#install) to install it.
 
 ## Getting Started
 
