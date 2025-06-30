@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class WebCrawlWorkflowImplTest {
@@ -67,30 +68,23 @@ class WebCrawlWorkflowImplTest {
     }
 
     @Test  
-    void testWorkflow_BlankURL_CurrentlyRetries_ProvesBadBehavior(WebCrawlWorkflow workflow) {
-        // This test shows the current bad behavior - IllegalArgumentException retries
-        // We'll use timing to prove retries are happening (>10 seconds = multiple retries)
+    void testWorkflow_BlankURL_FailsFastWithRetryPolicy(WebCrawlWorkflow workflow) {
+        // This test verifies that retry policy excludes IllegalArgumentException
+        // Should fail fast (< 5 seconds) without retries
         
         WebCrawlRequest request = new WebCrawlRequest("   ", List.of(OutputFormat.JSON));
         long startTime = System.currentTimeMillis();
         
-        try {
-            // This will take a long time due to retries - proving the bad behavior
+        // Execute workflow - should fail fast due to retry policy configuration
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             workflow.crawlWebsite(request);
-        } catch (Exception e) {
-            long duration = System.currentTimeMillis() - startTime;
-            
-            // If it takes more than 10 seconds, retries are definitely happening
-            // This proves we need to configure retry policy to exclude IllegalArgumentException
-            if (duration > 10000) {
-                assertThat(e).isInstanceOf(IllegalArgumentException.class);
-                // Test passes - proves current bad behavior (retries happening)
-                return;
-            }
-        }
+        });
         
-        // If we reach here quickly, retry policy is already configured (which is good)
-        // But for now, this test expects the bad behavior to exist
+        long duration = System.currentTimeMillis() - startTime;
+        
+        // Should complete quickly (< 5 seconds) proving no retries happened
+        assertThat(duration).isLessThan(5000);
+        assertThat(exception.getMessage()).contains("URL cannot be blank");
     }
 
     @Test

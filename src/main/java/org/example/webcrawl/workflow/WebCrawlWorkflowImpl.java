@@ -1,6 +1,7 @@
 package org.example.webcrawl.workflow;
 
 import io.temporal.activity.ActivityOptions;
+import io.temporal.common.RetryOptions;
 import io.temporal.workflow.ChildWorkflowOptions;
 import io.temporal.workflow.Workflow;
 import org.example.webcrawl.activity.WebCrawlActivity;
@@ -19,6 +20,9 @@ public class WebCrawlWorkflowImpl implements WebCrawlWorkflow {
             WebCrawlActivity.class,
             ActivityOptions.newBuilder()
                     .setStartToCloseTimeout(Duration.ofMinutes(5))
+                    .setRetryOptions(RetryOptions.newBuilder()
+                            .setDoNotRetry(IllegalArgumentException.class.getName())
+                            .build())
                     .build()
     );
 
