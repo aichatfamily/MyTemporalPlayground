@@ -22,6 +22,7 @@ public class WebCrawlWorkflowImpl implements WebCrawlWorkflow {
                     .setStartToCloseTimeout(Duration.ofMinutes(5))
                     .setRetryOptions(RetryOptions.newBuilder()
                             .setDoNotRetry(IllegalArgumentException.class.getName())
+                            .setMaximumAttempts(3)
                             .build())
                     .build()
     );
