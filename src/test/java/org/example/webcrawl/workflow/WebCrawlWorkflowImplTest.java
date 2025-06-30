@@ -88,25 +88,18 @@ class WebCrawlWorkflowImplTest {
     }
 
     @Test
-    void testWorkflow_BlankURL_CountingActivity_VerifyNoRetries(WebCrawlWorkflow workflow) {
-        // This test uses the default test extension which has the retry policy configured
-        // We can't easily inject a counting activity with the parameter injection approach
-        // So this test serves as documentation of what we WOULD test with a counting activity
+    void testWorkflow_BlankURL_VerifyExceptionThrown(WebCrawlWorkflow workflow) {
+        // Simple test to verify the workflow throws an exception for blank URL
+        // This complements the timing test by ensuring the basic behavior works
         
         WebCrawlRequest request = new WebCrawlRequest("   ", List.of(OutputFormat.JSON));
         
-        try {
-            // Execute workflow - with retry policy, activity should be called exactly once
+        // Should throw an exception for blank URL input - that's the main assertion
+        assertThrows(Exception.class, () -> {
             workflow.crawlWebsite(request);
-        } catch (Exception e) {
-            // Expected exception due to blank URL
-        }
+        });
         
-        // NOTE: In a real implementation with TestWorkflowExtension API working properly,
-        // we would verify: assertThat(callCounter.get()).isEqualTo(1);
-        // This would prove the retry policy prevents multiple activity invocations
-        
-        // For now, the timing test (testWorkflow_BlankURL_FailsFastWithRetryPolicy) 
-        // serves as the primary verification that retries are not happening
+        // Test passes if exception is thrown - proves validation is working
+        // The timing test proves it fails fast due to retry policy
     }
 }
