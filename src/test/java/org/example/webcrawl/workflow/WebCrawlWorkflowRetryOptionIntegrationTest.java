@@ -32,11 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  *    ✅ Tests successful workflow execution with real WebCrawlActivityImpl
  *    ❌ Does NOT test retry policy behavior or exception scenarios
  * <p>
- * 3. WebCrawlWorkflowRetryTest.java - Retry behavior verification (controlled)
- *    ✅ Tests that IllegalArgumentException doesn't trigger retries
- *    ❌ Uses custom test activity, NOT the real WebCrawlActivityImpl
- * <p>
- * 4. THIS FILE - End-to-end integration tests (real implementation + retry policy)
+ * 3. THIS FILE - End-to-end integration tests (real implementation + retry policy)
  *    ✅ Tests retry behavior using the actual WebCrawlActivityImpl implementation
  *    ✅ Verifies the real activity throws IllegalArgumentException AND doesn't retry
  *    ✅ Ensures the configured retry policy (setDoNotRetry) works with production code
